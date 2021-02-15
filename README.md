@@ -1,3 +1,7 @@
+```bash
+composer require normanhuth/referrer-logging
+```
+
 #### For file method
 
 ```php
@@ -14,12 +18,16 @@
 ---
 
 #### Publish the config:
-`php artisan vendor:publish --provider="NormanHuth\ReferrerLogging\ReferrerLoggingServiceProvider" --tag=config`
+```bash
+php artisan vendor:publish --provider="NormanHuth\ReferrerLogging\ReferrerLoggingServiceProvider" --tag=config
+```
 
 ---
 
 #### Publish the migrations:
-`php artisan vendor:publish --provider="NormanHuth\ReferrerLogging\ReferrerLoggingServiceProvider" --tag=migrations`
+```bash
+php artisan vendor:publish --provider="NormanHuth\ReferrerLogging\ReferrerLoggingServiceProvider" --tag=migrations
+```
 
 #### Add middleware to app/Http/Kernel.php for all routes
 ```php

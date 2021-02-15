@@ -16,6 +16,6 @@ class ReferrerHost extends Model
 
     public function referrers()
     {
-        return $this->hasMany(Referrer::class);
+        return $this->hasMany(Referrer::class, 'host_id');
     }
 }
