@@ -16,6 +16,10 @@ composer require normanhuth/referrer-logging
     ],
 ```
 ---
+The artisan command to delete the file memory:
+```bash
+referrer-logging:cleanup
+```
 
 #### Publish the config:
 ```bash
