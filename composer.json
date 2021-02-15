@@ -1,0 +1,40 @@
+{
+    "name": "normanhuth/referrer-logging",
+    "description": "Referrer logging for Lumen and Laravel",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "lumen",
+        "referrer",
+        "laravel-framework",
+        "lumen-framework",
+        "referrer",
+        "referrer-tracking",
+        "logging"
+    ],
+    "authors": [
+        {
+            "name": "Norman Huth",
+            "email": "norman@huth.it"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/auth": "^8.0",
+        "illuminate/database": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NormanHuth\\ReferrerLogging\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NormanHuth\\ReferrerLogging\\ReferrerLoggingServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
