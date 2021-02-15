@@ -15,7 +15,6 @@ class ReferrerLoggingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Log::debug(__DIR__ . '/../config/referrer-logging.php');
         $this->publishes([
             __DIR__ . '/../config/referrer-logging.php' => config_path('referrer-logging.php')
         ], 'config');
