@@ -29,7 +29,7 @@ class ReferrerLog
     {
         $this->referrer = $request->headers->get('referer');
 
-        if ($this->referrer && !str_starts_with($this->referrer, config('app.url'))) {
+        if ($this->referrer && $this->getHost($this->referrer) != $this->getHost(config('app.url', $_SERVER['SERVER_NAME']))) {
             $this->target = $request->path();
             $this->userIp = $request->ip();
             $this->userMac = getMAcAddressExec();
