@@ -1,5 +1,5 @@
 ```bash
-composer require normanhuth/referrer-logging
+composer require muetze42/referrer-logging
 ```
 
 #### For file method
