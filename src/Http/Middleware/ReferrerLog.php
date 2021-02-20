@@ -32,7 +32,7 @@ class ReferrerLog
         if ($this->referrer && $this->getHost($this->referrer) != $this->getHost(config('app.url', $_SERVER['SERVER_NAME'])) && $this->getHost($this->referrer) != $_SERVER['SERVER_ADDR']) {
             $this->target = $request->path();
             $this->userIp = $request->ip();
-            $this->userMac = getMAcAddressExec();
+            $this->userMac = $this->getMAcAddressExec();
             $this->userAgent = $request->server('HTTP_USER_AGENT');
 
             $this->key = md5($this->referrer.$this->target).'-'.md5($this->userIp.$this->userMac.$this->userAgent);
@@ -51,6 +51,11 @@ class ReferrerLog
         }
 
         return $next($request);
+    }
+
+    protected function getMAcAddressExec(): string
+    {
+        return substr(exec('getmac'), 0, 17);
     }
 
     protected function setThrottle()
