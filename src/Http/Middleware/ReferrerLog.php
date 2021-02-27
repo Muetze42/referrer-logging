@@ -77,7 +77,7 @@ class ReferrerLog
             return Storage::disk('referrer-cache')->exists($this->key);
         }
 
-        return Cache::has('key');
+        return Cache::has('ref-'.$this->key);
     }
 
     protected function getHost($url): string
