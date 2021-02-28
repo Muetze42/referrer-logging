@@ -17,6 +17,7 @@ class ReferrerLog
     protected string $userMac;
     protected ?string $userAgent;
     protected string $key;
+    protected Request $request;
 
     /**
      * Handle an incoming request.
@@ -27,30 +28,36 @@ class ReferrerLog
      */
     public function handle(Request $request, Closure $next)
     {
-        $this->referrer = $request->headers->get('referer');
+        $this->request = $request;
+        $this->referrer = $this->request->headers->get('referer');
 
         if ($this->referrer && $this->getHost($this->referrer) != $this->getHost(config('app.url', $_SERVER['SERVER_NAME'])) && $this->getHost($this->referrer) != $_SERVER['SERVER_ADDR']) {
-            $this->target = $request->path();
-            $this->userIp = $request->ip();
-            $this->userMac = $this->getMAcAddressExec();
-            $this->userAgent = $request->server('HTTP_USER_AGENT');
-
-            $this->key = md5($this->referrer.$this->target).'-'.md5($this->userIp.$this->userMac.$this->userAgent);
-
-            if (!$this->isLogged()) {
-                $host = ReferrerHost::firstOrCreate([
-                    'host' => $this->getHost($this->referrer)
-                ]);
-                $host->update(['count' => DB::raw('count+1')]);
-                $host->referrers()->create([
-                    'referrer' => $this->referrer,
-                    'target'   => $this->target,
-                ]);
-                $this->setThrottle();
-            }
+            $this->logReferrer();
         }
 
         return $next($request);
+    }
+
+    protected function logReferrer()
+    {
+        $this->target = $this->request->path();
+        $this->userIp = $this->request->ip();
+        $this->userMac = $this->getMAcAddressExec();
+        $this->userAgent = $this->request->server('HTTP_USER_AGENT');
+
+        $this->key = md5($this->referrer.$this->target).'-'.md5($this->userIp.$this->userMac.$this->userAgent);
+
+        if (!$this->isLogged()) {
+            $host = ReferrerHost::firstOrCreate([
+                'host' => $this->getHost($this->referrer)
+            ]);
+            $host->update(['count' => DB::raw('count+1')]);
+            $host->referrers()->create([
+                'referrer' => $this->referrer,
+                'target'   => $this->target,
+            ]);
+            $this->setThrottle();
+        }
     }
 
     protected function getMAcAddressExec(): string
@@ -82,6 +89,7 @@ class ReferrerLog
 
     protected function getHost($url): string
     {
+        $parse = (string) $url;
         $parse = parse_url($url, PHP_URL_HOST);
         $parse = str_starts_with($parse, 'www.') ? substr($parse, 4) : $parse;
 
